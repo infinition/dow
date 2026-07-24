@@ -1,0 +1,1 @@
+javascript:(() => { window.open('https://www.google.com/search?q=site:' + encodeURIComponent(location.hostname), '_blank'); })();

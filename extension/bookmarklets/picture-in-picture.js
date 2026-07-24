@@ -1,0 +1,1 @@
+javascript:(async () => { const v = document.querySelector('video'); if (!v) { alert('No video element found on page.'); return; } try { if (document.pictureInPictureElement) { await document.exitPictureInPicture(); } else { await v.requestPictureInPicture(); } } catch(e) { alert('Picture-in-Picture failed: ' + e.message); } })();

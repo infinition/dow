@@ -1,0 +1,32 @@
+name: CI & Extension Verification
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify Node.js Server Syntax
+        run: node -c server.js
+
+      - name: Validate Chrome Extension Manifest V3
+        run: |
+          node -e "
+            const fs = require('fs');
+            const manifest = JSON.parse(fs.readFileSync('extension/manifest.json', 'utf8'));
+            if (manifest.manifest_version !== 3) throw new Error('Manifest version must be 3');
+            console.log('Manifest V3 Validated: ' + manifest.name + ' v' + manifest.version);
+          "

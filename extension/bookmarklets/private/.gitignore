@@ -1,0 +1,4 @@
+# Ignore all files in this private folder
+*
+!.gitignore
+!.gitkeep

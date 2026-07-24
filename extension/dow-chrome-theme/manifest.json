@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "DOW Chrome Theme",
+  "version": "1.0.0",
+  "description": "DOW dark gray Chrome theme with orange and acid-green accents.",
+  "icons": {
+    "128": "dow.png"
+  },
+  "theme": {
+    "colors": {
+      "frame": [17, 18, 19],
+      "frame_inactive": [25, 26, 28],
+      "toolbar": [25, 26, 28],
+      "tab_text": [248, 250, 252],
+      "tab_background_text": [148, 163, 184],
+      "bookmark_text": [248, 250, 252],
+      "ntp_background": [17, 18, 19],
+      "ntp_text": [248, 250, 252],
+      "ntp_link": [163, 230, 53],
+      "button_background": [249, 115, 22],
+      "omnibox_background": [31, 32, 34],
+      "omnibox_text": [248, 250, 252],
+      "omnibox_results_bg": [25, 26, 28],
+      "omnibox_results_text": [248, 250, 252],
+      "omnibox_results_url": [163, 230, 53],
+      "omnibox_results_selected": [42, 43, 46],
+      "omnibox_results_selected_text": [248, 250, 252],
+      "omnibox_results_selected_url": [190, 242, 100],
+      "tab_loading": [249, 115, 22]
+    },
+    "tints": {
+      "buttons": [0.08, 0.72, 0.98]
+    }
+  }
+}

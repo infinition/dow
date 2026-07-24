@@ -1,0 +1,1 @@
+javascript:(() => { const v = document.querySelector('video'); if (!v) { alert('No video element found on page.'); return; } const fn = v.requestFullscreen || v.webkitRequestFullscreen || v.webkitEnterFullscreen || v.mozRequestFullScreen || v.msRequestFullscreen; if (fn) { fn.call(v); } else { alert('Fullscreen mode is not supported by your browser.'); } })();

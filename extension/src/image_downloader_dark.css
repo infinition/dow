@@ -1,0 +1,463 @@
+/* ==========================================================================
+   IMAGE DOWNLOADER — DOW DARK THEME
+   Self-contained styling. Tailwind's `dark:` variants are absent from the
+   frozen build, so every dark-mode look is expressed here as plain CSS,
+   scoped under #image-downloader-root. Single, coherent dark style.
+   ========================================================================== */
+
+:root {
+  --id-bg: #111213;
+  --id-surface: #1a1b1d;
+  --id-surface-2: #222326;
+  --id-surface-hover: #2b2c2f;
+  --id-border: rgba(255, 255, 255, 0.08);
+  --id-border-strong: rgba(255, 255, 255, 0.16);
+  --id-text: #e5e9f0;
+  --id-text-muted: #94a3b8;
+  --id-text-faint: #64748b;
+  --id-indigo: #f97316;
+  --id-indigo-light: #fb923c;
+  --id-cyan: #a3e635;
+  --id-cyan-light: #bef264;
+  --id-green: #10b981;
+  --id-rose: #f97316;
+  --id-radius: 12px;
+  --id-radius-sm: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   Root
+   -------------------------------------------------------------------------- */
+#image-downloader-root {
+  display: flex !important;
+  flex-direction: column !important;
+  background: var(--id-bg) !important;
+  color: var(--id-text) !important;
+  font-family: 'Outfit', system-ui, sans-serif !important;
+  padding: 8px !important;
+  overflow-x: hidden;
+}
+
+#image-downloader-root * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+
+/* One unified, subtle scrollbar everywhere inside the tool */
+#image-downloader-root ::-webkit-scrollbar,
+#image-downloader-root::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+#image-downloader-root ::-webkit-scrollbar-track,
+#image-downloader-root::-webkit-scrollbar-track {
+  background: transparent;
+}
+#image-downloader-root ::-webkit-scrollbar-thumb,
+#image-downloader-root::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 999px;
+}
+#image-downloader-root ::-webkit-scrollbar-thumb:hover,
+#image-downloader-root::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   Header (filter bar) & Footer (download bar) surfaces
+   -------------------------------------------------------------------------- */
+#image-downloader-root header,
+#image-downloader-root footer {
+  background: var(--id-surface) !important;
+  border: 1px solid var(--id-border) !important;
+  border-radius: var(--id-radius) !important;
+  padding: 10px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+  z-index: 5;
+}
+#image-downloader-root header { margin-bottom: 8px !important; }
+#image-downloader-root footer { margin-top: 8px !important; }
+
+/* --------------------------------------------------------------------------
+   Inputs & selects
+   -------------------------------------------------------------------------- */
+#image-downloader-root input[type='text'],
+#image-downloader-root select {
+  background: rgba(0, 0, 0, 0.45) !important;
+  color: var(--id-text) !important;
+  border: 1px solid var(--id-border-strong) !important;
+  border-radius: var(--id-radius-sm) !important;
+  padding: 7px 10px !important;
+  font-size: 0.76rem !important;
+  font-family: inherit !important;
+  outline: none !important;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease !important;
+}
+#image-downloader-root input[type='text']::placeholder { color: var(--id-text-faint) !important; }
+#image-downloader-root input[type='text']:focus,
+#image-downloader-root select:focus {
+  border-color: var(--id-indigo) !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25) !important;
+}
+#image-downloader-root select option { background: var(--id-surface-2); color: var(--id-text); }
+
+/* --------------------------------------------------------------------------
+   Generic icon buttons (reload, advanced-filters toggle, card actions…)
+   -------------------------------------------------------------------------- */
+#image-downloader-root header button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--id-text);
+  border: 1px solid var(--id-border);
+  border-radius: var(--id-radius-sm);
+  padding: 6px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+}
+#image-downloader-root header button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--id-border-strong);
+  transform: translateY(-1px);
+}
+/* Icons rendered as <img> are black artwork → invert so they read on dark */
+#image-downloader-root header button img,
+#image-downloader-root .id-columns-icon {
+  filter: invert(0.85) brightness(1.6);
+}
+
+/* --------------------------------------------------------------------------
+   Toolbar (tabs / select-all / download / columns)
+   -------------------------------------------------------------------------- */
+#image-downloader-root .id-toolbar { gap: 8px 8px; }
+
+/* Matching / filtered-out segmented tabs */
+#image-downloader-root .id-toolbar ul {
+  border: 1px solid var(--id-border-strong) !important;
+  background: var(--id-surface) !important;
+  border-radius: 999px !important;
+  overflow: hidden;
+}
+#image-downloader-root .id-toolbar ul label {
+  background: transparent !important;
+  color: var(--id-text-muted) !important;
+  padding: 5px 10px !important;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+#image-downloader-root .id-toolbar ul label:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--id-text) !important;
+}
+#image-downloader-root .id-toolbar ul label:has(input:checked) {
+  background: rgba(249, 115, 22, 0.22) !important;
+  color: #fed7aa !important;
+}
+#image-downloader-root .id-toolbar ul li + li label { border-left: 1px solid var(--id-border) !important; }
+
+/* Little count circles inside tabs */
+#image-downloader-root .id-toolbar ul span[class*='rounded-full'] {
+  color: #fff !important;
+}
+
+/* Select-all pill */
+#image-downloader-root .id-toolbar > label {
+  background: var(--id-surface) !important;
+  border: 1px solid var(--id-border-strong) !important;
+  color: var(--id-text-muted) !important;
+  border-radius: 999px !important;
+  padding: 5px 10px !important;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+#image-downloader-root .id-toolbar > label:hover {
+  background: var(--id-surface-hover) !important;
+  color: var(--id-text) !important;
+}
+
+/* Primary: download-selected button */
+#image-downloader-root .id-download-selected {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: 800 0.78rem/1 'Outfit', sans-serif;
+  color: #fff;
+  white-space: nowrap;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--id-indigo) 0%, var(--id-cyan) 100%);
+  box-shadow: 0 3px 12px rgba(163, 230, 53, 0.4);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+}
+#image-downloader-root .id-download-count { min-width: 8px; text-align: center; }
+#image-downloader-root .id-download-selected:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(163, 230, 53, 0.55);
+}
+#image-downloader-root .id-download-selected:active:not(:disabled) { transform: translateY(0); }
+#image-downloader-root .id-download-selected:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+#image-downloader-root .id-download-selected.is-loading { animation: id-pulse 1.2s ease-in-out infinite; }
+#image-downloader-root .id-download-icon {
+  width: 14px;
+  height: 14px;
+  filter: invert(1) brightness(2);
+}
+@keyframes id-pulse { 50% { opacity: 0.6; } }
+
+/* Columns range slider — sits alone on its own row and spans the full width */
+#image-downloader-root .id-columns { color: var(--id-text-muted); }
+#image-downloader-root .id-columns-icon { width: 16px; height: 16px; opacity: 0.9; flex: none; }
+#image-downloader-root .id-columns-count {
+  min-width: 14px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--id-text);
+  flex: none;
+}
+#image-downloader-root .id-columns-range {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  outline: none;
+  cursor: pointer;
+}
+#image-downloader-root .id-columns-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--id-indigo-light);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+#image-downloader-root .id-columns-range::-webkit-slider-thumb:hover { transform: scale(1.15); }
+#image-downloader-root .id-columns-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--id-indigo-light);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+#image-downloader-root .id-columns-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* --------------------------------------------------------------------------
+   Advanced filters
+   -------------------------------------------------------------------------- */
+#image-downloader-root .id-filters { color: var(--id-text-muted); }
+/* Force the filter table to distribute width so the (empty) slider column can't
+   collapse to zero — otherwise noUiSlider renders both handles on top of each
+   other. Belt-and-braces with the ResizeObserver in AdvancedFilters.js. */
+#image-downloader-root .id-filters table { table-layout: fixed; width: 100%; }
+#image-downloader-root .id-filters .noUi-target { width: 100%; min-width: 120px; }
+#image-downloader-root .id-filter-dim { color: var(--id-text); font-weight: 600; font-size: 0.74rem; }
+#image-downloader-root .id-filter-value {
+  color: var(--id-text-faint);
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+#image-downloader-root .id-filter-value.is-active { color: var(--id-cyan-light); }
+
+/* Checkboxes */
+#image-downloader-root input[type='checkbox'] {
+  accent-color: var(--id-indigo);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+#image-downloader-root .id-filters label,
+#image-downloader-root label {
+  color: var(--id-text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* noUiSlider theming */
+#image-downloader-root .noUi-target {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid var(--id-border) !important;
+  border-radius: 999px !important;
+  height: 5px !important;
+  box-shadow: none !important;
+}
+#image-downloader-root .noUi-connect {
+  background: linear-gradient(90deg, var(--id-indigo), var(--id-cyan)) !important;
+}
+#image-downloader-root .noUi-handle {
+  width: 14px !important;
+  height: 14px !important;
+  border-radius: 50% !important;
+  background: var(--id-indigo-light) !important;
+  border: 2px solid #fff !important;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
+  top: -5px !important;
+  right: -7px !important;
+  cursor: grab !important;
+}
+#image-downloader-root .noUi-handle:active { cursor: grabbing !important; }
+#image-downloader-root .noUi-handle::before,
+#image-downloader-root .noUi-handle::after { display: none !important; }
+
+/* --------------------------------------------------------------------------
+   Image grid & cards
+   -------------------------------------------------------------------------- */
+#image-downloader-root #images_container {
+  gap: 8px !important;
+  padding: 8px 4px !important;
+}
+#image-downloader-root #images_container > div {
+  background: var(--id-surface) !important;
+  border: 1px solid var(--id-border) !important;
+  border-radius: var(--id-radius) !important;
+  overflow: hidden;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+#image-downloader-root #images_container > div:hover {
+  border-color: rgba(249, 115, 22, 0.55) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) !important;
+  transform: translateY(-1px);
+}
+#image-downloader-root #images_container img { border-radius: 6px; }
+
+/* Card action buttons (background-image svgs are black → invert to read on dark) */
+#image-downloader-root #images_container button[style*='background-image'],
+#image-downloader-root #images_container a[style*='background-image'] {
+  background-color: rgba(15, 18, 28, 0.85) !important;
+  border: 1px solid var(--id-border-strong) !important;
+  border-radius: 6px !important;
+  filter: invert(1) brightness(1.8);
+  transition: background-color 0.15s ease;
+}
+#image-downloader-root #images_container button[style*='background-image']:hover,
+#image-downloader-root #images_container a[style*='background-image']:hover {
+  background-color: rgba(249, 115, 22, 0.9) !important;
+}
+
+/* Stat chips at bottom of card */
+#image-downloader-root #images_container small {
+  color: #fff !important;
+}
+
+/* Error state */
+#image-downloader-root #images_container [class*='text-red'] { color: #ef4444 !important; }
+#image-downloader-root #images_container [class*='bg-red'] { background: rgba(239, 68, 68, 0.15) !important; }
+
+/* --------------------------------------------------------------------------
+   Sort button (cycles size / width / height)
+   -------------------------------------------------------------------------- */
+#image-downloader-root .id-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  border: 1px solid var(--id-border-strong);
+  background: var(--id-surface);
+  color: var(--id-text-muted);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font: 700 0.72rem/1 'Outfit', sans-serif;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+#image-downloader-root .id-sort:hover { background: var(--id-surface-hover); color: var(--id-text); }
+#image-downloader-root .id-sort.is-active {
+  background: rgba(249, 115, 22, 0.22);
+  border-color: rgba(249, 115, 22, 0.5);
+  color: #fed7aa;
+}
+#image-downloader-root .id-sort-arrow { font-size: 0.9em; line-height: 1; }
+
+/* --------------------------------------------------------------------------
+   Footer: download-options dropdown
+   -------------------------------------------------------------------------- */
+#image-downloader-root .id-dl-options { margin-bottom: 8px; }
+#image-downloader-root .id-dl-options-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  color: var(--id-text-muted);
+  padding: 3px 4px;
+  font: 700 0.74rem/1 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+#image-downloader-root .id-dl-options-toggle:hover { color: var(--id-text); }
+#image-downloader-root .id-dl-options-label { display: inline-flex; align-items: center; gap: 6px; }
+#image-downloader-root .id-dl-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--id-cyan-light);
+  box-shadow: 0 0 6px rgba(34, 211, 238, 0.7);
+}
+#image-downloader-root .id-dl-caret { color: var(--id-text-faint); font-size: 0.9em; }
+
+/* --------------------------------------------------------------------------
+   Floating download button (appears when scrolled down)
+   -------------------------------------------------------------------------- */
+#image-downloader-root .id-download-fab {
+  position: fixed;
+  right: 18px;
+  bottom: 74px;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: 800 0.85rem/1 'Outfit', sans-serif;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--id-indigo) 0%, var(--id-cyan) 100%);
+  box-shadow: 0 6px 20px rgba(163, 230, 53, 0.5);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  animation: id-fab-in 0.18s ease;
+}
+#image-downloader-root .id-download-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 24px rgba(163, 230, 53, 0.65);
+}
+#image-downloader-root .id-download-fab.is-loading { animation: id-pulse 1.2s ease-in-out infinite; }
+#image-downloader-root .id-download-fab .id-download-icon { width: 16px; height: 16px; filter: invert(1) brightness(2); }
+@keyframes id-fab-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------------------------------
+   Text color helpers (keep hierarchy instead of flattening everything)
+   -------------------------------------------------------------------------- */
+#image-downloader-root .text-slate-500,
+#image-downloader-root .text-slate-400,
+#image-downloader-root .text-slate-300,
+#image-downloader-root .text-gray-500 { color: var(--id-text-muted) !important; }
+#image-downloader-root .text-slate-600,
+#image-downloader-root .text-slate-700 { color: var(--id-text) !important; }

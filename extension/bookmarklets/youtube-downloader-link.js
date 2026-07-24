@@ -1,0 +1,1 @@
+javascript:(() => { const url = location.href; if (!/youtu(\.be|be\.com)/i.test(url)) { alert('Please run this bookmarklet on a YouTube video page.'); return; } window.open('https://cobalt.tools/?url=' + encodeURIComponent(url), '_blank'); })();

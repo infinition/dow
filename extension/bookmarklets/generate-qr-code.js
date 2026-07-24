@@ -1,0 +1,1 @@
+javascript:(function(){var url='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+encodeURIComponent(location.href);var w=open(url,'_blank','width=400,height=400,resizable=yes');if(w){w.focus()}else{location.href=url}})();

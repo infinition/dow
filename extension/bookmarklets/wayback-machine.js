@@ -1,0 +1,1 @@
+javascript:(() => { window.open('https://web.archive.org/web/*/' + location.href, '_blank'); })();

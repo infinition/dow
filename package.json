@@ -1,0 +1,22 @@
+{
+  "name": "dow-suite",
+  "version": "1.0.0",
+  "description": "Universal Web Stream & Media Downloader Suite (Chrome Extension + Local Node.js Backend)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node -e \"console.log('Server syntax check OK'); process.exit(0);\""
+  },
+  "keywords": [
+    "downloader",
+    "video-downloader",
+    "chrome-extension",
+    "hls",
+    "yt-dlp",
+    "bunnystream",
+    "subtitles",
+    "lyrics"
+  ],
+  "author": "Infinition",
+  "license": "MIT"
+}

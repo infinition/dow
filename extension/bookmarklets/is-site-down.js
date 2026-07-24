@@ -1,0 +1,1 @@
+javascript:(() => { window.open('https://downforeveryoneorjustme.com/' + location.hostname, '_blank'); })();

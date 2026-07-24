@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "Dow - Video, Audio & Image Downloader Suite",
+  "version": "2.6.0",
+  "description": "Full WebApp & Extension bundle. Detects videos, BunnyStream, Apple Music albums, HLS streams, and includes complete Image Downloader suite.",
+  "permissions": [
+    "activeTab",
+    "webRequest",
+    "storage",
+    "tabs",
+    "downloads",
+    "scripting",
+    "sidePanel"
+  ],
+  "side_panel": {
+    "default_path": "popup.html"
+  },
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/*",
+        "lib/*",
+        "src/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Dow Companion Suite",
+    "default_icon": {
+      "16": "dow.png",
+      "32": "dow.png",
+      "48": "dow.png",
+      "128": "dow.png"
+    }
+  },
+  "icons": {
+    "16": "dow.png",
+    "32": "dow.png",
+    "48": "dow.png",
+    "128": "dow.png"
+  }
+}

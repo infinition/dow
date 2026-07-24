@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dow - Multi-Platform Video & Stream Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="logo-container">
+        <div class="dow-download-icon" style="--icon-size: 42px; border-radius: 12px;" aria-hidden="true">
+          <span class="dow-glow"></span>
+          <span class="dow-cloud" style="width: 23px; height: 12px; margin-top: 5px; border-radius: 7px;">
+            <span class="dow-arrow" style="width: 3px; height: 10px; top: 1px;"></span>
+          </span>
+        </div>
+        <div class="logo-text">
+          <span class="brand-name">DOW</span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-btn active" data-tab="extractor">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Extractor</span>
+        </button>
+        <button class="nav-btn" data-tab="sniffer">
+          <i class="fa-solid fa-network-wired"></i>
+          <span>m3u8 Sniffer</span>
+        </button>
+        <button class="nav-btn" data-tab="downloads">
+          <i class="fa-solid fa-download"></i>
+          <span>Queue</span>
+          <span class="badge" id="queue-count">0</span>
+        </button>
+        <button class="nav-btn" data-tab="history">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>History</span>
+        </button>
+        <button class="nav-btn" data-tab="bookmarklets">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Bookmarklets</span>
+        </button>
+        <button class="nav-btn" data-tab="settings">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+
+      <!-- TAB 1: EXTRACTOR -->
+      <section id="tab-extractor" class="tab-content active">
+        <div class="hero-section">
+          <h1>Download Video & Audio Streams</h1>
+          <p>Extract videos from YouTube, HLS (.m3u8), Vimeo, TikTok, Kick, Canva, MP4 URLs & more.</p>
+          
+          <div class="search-box-wrapper">
+            <div class="search-box">
+              <i class="fa-solid fa-link search-icon"></i>
+              <input type="text" id="url-input" placeholder="Paste URL here (YouTube, .m3u8 stream, Vimeo, Kick, MP4 link...)" autocomplete="off">
+              <button id="paste-btn" class="secondary-btn" title="Paste from clipboard">
+                <i class="fa-solid fa-paste"></i>
+              </button>
+              <button id="analyze-btn" class="primary-btn">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Analyze</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="preset-pills">
+            <span class="pill-label">Supported platforms:</span>
+            <button class="pill" data-demo="hls"><i class="fa-solid fa-circle-play"></i> Sample HLS (.m3u8)</button>
+            <button class="pill" data-demo="youtube"><i class="fa-brands fa-youtube"></i> YouTube</button>
+            <button class="pill" data-demo="vimeo"><i class="fa-brands fa-vimeo-v"></i> Vimeo</button>
+            <button class="pill" data-demo="tiktok"><i class="fa-brands fa-tiktok"></i> TikTok</button>
+            <button class="pill" data-demo="mp4"><i class="fa-solid fa-file-video"></i> Direct MP4</button>
+          </div>
+        </div>
+
+        <!-- Extraction Results -->
+        <div id="extraction-results" class="results-container hidden">
+          <div class="results-header">
+            <div class="media-meta-summary">
+              <img id="media-thumb" src="" alt="Thumbnail" class="media-thumb-img">
+              <div class="media-info">
+                <h2 id="media-title">Media Title</h2>
+                <div class="media-tags">
+                  <span id="media-platform-tag" class="tag platform-tag">HLS Stream</span>
+                  <span id="media-duration-tag" class="tag">00:00</span>
+                  <span id="media-uploader-tag" class="tag">Unknown Source</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-actions">
+              <button id="preview-media-btn" class="action-btn outline">
+                <i class="fa-solid fa-play"></i> Preview
+              </button>
+            </div>
+          </div>
+
+          <!-- SUBTITLES SELECTION SECTION -->
+          <div id="subtitles-section" class="subtitles-box hidden">
+            <h3><i class="fa-solid fa-closed-captioning"></i> Subtitles & Closed Captions (.srt)</h3>
+            <div class="subtitles-controls">
+              <select id="subtitle-lang-select" class="subtitle-select">
+                <option value="fr">🇫🇷 French</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Spanish</option>
+                <option value="de">🇩🇪 German</option>
+                <option value="auto">✨ Auto-detected Language</option>
+              </select>
+              <button id="download-subtitles-btn" class="action-btn outline">
+                <i class="fa-solid fa-file-arrow-down"></i> Download Subtitles (.srt)
+              </button>
+            </div>
+          </div>
+
+          <div class="variants-section">
+            <h3><i class="fa-solid fa-layer-group"></i> Available Formats & Qualities</h3>
+            <div class="variants-grid" id="variants-grid">
+              <!-- Dynamically populated variant cards -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: M3U8 SNIFFER / RAW TEXT PARSER -->
+      <section id="tab-sniffer" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>HLS / m3u8 Playlist Sniffer & Reconstructor</h2>
+            <p>Paste raw m3u8 playlist text, chunk URLs or network logs to assemble and download streams.</p>
+          </div>
+        </div>
+
+        <div class="sniffer-grid">
+          <div class="sniffer-card">
+            <h3><i class="fa-solid fa-code"></i> Paste Raw m3u8 Content</h3>
+            <textarea id="m3u8-input" placeholder="#EXTM3U&#10;#EXT-X-VERSION:3&#10;#EXT-X-TARGETDURATION:10&#10;#EXTINF:10.000,&#10;https://example.com/segment1.ts&#10;#EXTINF:10.000,&#10;https://example.com/segment2.ts..." rows="12"></textarea>
+            <div class="card-footer">
+              <input type="text" id="m3u8-custom-title" placeholder="Custom Output Filename (e.g. MyStream.mp4)">
+              <button id="m3u8-parse-btn" class="primary-btn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Build Download Stream
+              </button>
+            </div>
+          </div>
+
+          <div class="sniffer-card">
+            <h3><i class="fa-solid fa-file-import"></i> Drag & Drop Log / m3u8 File</h3>
+            <div class="drop-zone" id="m3u8-dropzone">
+              <i class="fa-solid fa-file-arrow-up drop-icon"></i>
+              <p>Drag & drop your <strong>.m3u8</strong>, <strong>.txt</strong> or <strong>.har</strong> file here</p>
+              <span class="drop-sub">or click to browse local files</span>
+              <input type="file" id="m3u8-file-input" accept=".m3u8,.txt,.har,.mpd" class="hidden">
+            </div>
+
+            <div class="sniffer-guide">
+              <h4><i class="fa-solid fa-lightbulb"></i> How to get m3u8 link from any website:</h4>
+              <ol>
+                <li>Open Chrome DevTools (<strong>F12</strong>) & navigate to <strong>Network</strong> tab.</li>
+                <li>Filter by <code>m3u8</code> or <code>media</code>.</li>
+                <li>Right-click the stream request & copy link address or response content.</li>
+                <li>Paste it here into Dow for instant reconstruction!</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: DOWNLOAD QUEUE -->
+      <section id="tab-downloads" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>Active Downloads & Extension Queue</h2>
+            <p>Monitor real-time segment downloading, stitching progress, and transfer speeds.</p>
+          </div>
+          <div class="header-actions-group">
+            <button id="clear-queue-btn" class="action-btn outline danger">
+              <i class="fa-solid fa-trash"></i> Clear Completed
+            </button>
+          </div>
+        </div>
+
+        <div id="downloads-list" class="downloads-list">
+          <div class="empty-state" id="empty-queue-state">
+            <i class="fa-solid fa-inbox"></i>
+            <h3>No active downloads</h3>
+            <p>Analyze a video or paste a stream link to start downloading.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: HISTORY -->
+      <section id="tab-history" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>Download History</h2>
+            <p>View previous downloads, smart naming records, and media details.</p>
+          </div>
+          <div class="search-filter-box">
+            <input type="text" id="history-search" placeholder="Search history...">
+            <button id="clear-history-btn" class="action-btn outline danger">
+              <i class="fa-solid fa-trash-can"></i> Clear History
+            </button>
+          </div>
+        </div>
+
+        <div id="history-list" class="history-list">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- TAB 5: BOOKMARKLETS -->
+      <section id="tab-bookmarklets" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>Bookmarklets</h2>
+            <p>Run one-click page actions in the active tab.</p>
+          </div>
+          <label class="bookmarklet-search" for="bookmarklet-search-input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="bookmarklet-search-input" type="search" placeholder="Search bookmarklets..." autocomplete="off">
+          </label>
+        </div>
+        <div id="bookmarklet-tags" class="bookmarklet-tags" aria-label="Bookmarklet tags"></div>
+        <div id="bookmarklet-list" class="bookmarklet-list"></div>
+      </section>
+
+      <!-- TAB 6: SETTINGS -->
+      <section id="tab-settings" class="tab-content">
+        <div class="section-header">
+          <div>
+            <h2>Application Settings</h2>
+            <p>Configure smart naming patterns, concurrency, and proxy fallbacks.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h3><i class="fa-solid fa-signature"></i> Smart Naming Template</h3>
+            <p class="setting-desc">Define default file naming placeholders when saving videos.</p>
+            <div class="setting-item">
+              <label for="smart-naming-input">Filename Format:</label>
+              <input type="text" id="smart-naming-input" value="{title}_[{quality}]_{date}">
+              <div class="naming-tags">
+                <span class="naming-tag" data-tag="{title}">{title}</span>
+                <span class="naming-tag" data-tag="{quality}">{quality}</span>
+                <span class="naming-tag" data-tag="{date}">{date}</span>
+                <span class="naming-tag" data-tag="{format}">{format}</span>
+                <span class="naming-tag" data-tag="{website}">{website}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h3><i class="fa-solid fa-gauge-high"></i> Performance & Download</h3>
+            <div class="setting-item">
+              <label for="max-concurrency">Max Parallel Segment Downloads:</label>
+              <select id="max-concurrency">
+                <option value="2">2 (Conservative)</option>
+                <option value="5" selected>5 (Recommended)</option>
+                <option value="10">10 (Fast Connection)</option>
+              </select>
+            </div>
+            <div class="setting-item checkbox-item">
+              <label class="switch">
+                <input type="checkbox" id="auto-stitch-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+              <span>Auto-stitch HLS TS segments into MP4 container</span>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h3><i class="fa-solid fa-palette"></i> Chrome Theme</h3>
+            <p class="setting-desc">Dark gray surfaces with DOW orange and acid-green accents.</p>
+            <button id="download-chrome-theme-btn" class="action-btn">
+              <i class="fa-solid fa-download"></i> Download DOW Chrome Theme
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- PLAYER PREVIEW MODAL -->
+  <div id="player-modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title"><i class="fa-solid fa-circle-play"></i> Media Preview</h3>
+        <button id="close-modal-btn" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="video-player-wrapper">
+          <video id="preview-video" controls autoplay></video>
+        </div>
+        <div id="modal-tech-specs" class="tech-specs">
+          <!-- Tech specs populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/extractor.js"></script>
+  <script src="js/downloader.js"></script>
+  <script src="js/sniffer.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/player.js"></script>
+  <script src="bookmarklets/catalog.js"></script>
+  <script src="bookmarklets/chrome-bookmarklets.js"></script>
+  <script src="bookmarklets/private/credential-bookmarklets.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

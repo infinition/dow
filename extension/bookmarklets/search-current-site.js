@@ -1,0 +1,1 @@
+javascript:(function(){var q=prompt('Search '+location.hostname+':','');if(q)location.href='https://www.google.com/search?q=site:'+encodeURIComponent(location.hostname)+' '+encodeURIComponent(q);})();

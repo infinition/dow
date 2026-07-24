@@ -1,0 +1,1 @@
+javascript:(() => { const id = 'dow-bw-mode'; const old = document.getElementById(id); if (old) { old.remove(); return; } const s = document.createElement('style'); s.id = id; s.textContent = 'html { filter: grayscale(100%) contrast(120%) !important; }'; document.documentElement.appendChild(s); })();
