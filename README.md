@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="dow.png" alt="DOW icon: a white download cloud on an orange to yellow gradient" width="120">
+</p>
+
 # DOW - Image Downloader & Bookmarklets Suite
 
 DOW is a Chrome extension (Manifest V3) with two tools: a bulk image downloader with
