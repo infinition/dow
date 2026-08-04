@@ -5,7 +5,9 @@ on:
     branches: [ main ]
     paths:
       - 'wiki/**'
-      - '.github/acidwiki.json'     
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - '.github/acidwiki.json'
       - '.github/workflows/wiki-sync.yml'
   
   workflow_dispatch:
