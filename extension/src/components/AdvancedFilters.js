@@ -125,7 +125,7 @@ function useSlider(/** @type {'width' | 'height'} */ dimension) {
 
 		// Build only once the element actually has a width. Creating noUiSlider on
 		// a zero-width element (e.g. while the popup tab is still laying out)
-		// collapses both handles into a few pixels — the "collapsed slider" bug.
+		// collapses both handles into a few pixels, the "collapsed slider" bug.
 		function build() {
 			if (slider.noUiSlider || slider.offsetWidth === 0) return;
 

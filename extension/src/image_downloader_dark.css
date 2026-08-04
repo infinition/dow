@@ -1,5 +1,5 @@
 /* ==========================================================================
-   IMAGE DOWNLOADER — DOW DARK THEME
+   IMAGE DOWNLOADER / DOW DARK THEME
    Self-contained styling. Tailwind's `dark:` variants are absent from the
    frozen build, so every dark-mode look is expressed here as plain CSS,
    scoped under #image-downloader-root. Single, coherent dark style.
@@ -213,7 +213,7 @@
 }
 @keyframes id-pulse { 50% { opacity: 0.6; } }
 
-/* Columns range slider — sits alone on its own row and spans the full width */
+/* Columns range slider, sits alone on its own row and spans the full width */
 #image-downloader-root .id-columns { color: var(--id-text-muted); }
 #image-downloader-root .id-columns-icon { width: 16px; height: 16px; opacity: 0.9; flex: none; }
 #image-downloader-root .id-columns-count {
@@ -268,7 +268,7 @@
    -------------------------------------------------------------------------- */
 #image-downloader-root .id-filters { color: var(--id-text-muted); }
 /* Force the filter table to distribute width so the (empty) slider column can't
-   collapse to zero — otherwise noUiSlider renders both handles on top of each
+   collapse to zero, otherwise noUiSlider renders both handles on top of each
    other. Belt-and-braces with the ResizeObserver in AdvancedFilters.js. */
 #image-downloader-root .id-filters table { table-layout: fixed; width: 100%; }
 #image-downloader-root .id-filters .noUi-target { width: 100%; min-width: 120px; }

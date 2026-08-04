@@ -61,9 +61,9 @@ export function Images(/** @type {ImagesProps} */ { class: className, style, ...
 	const sortLabels = { none: 'Sort', size: 'KB', width: 'W', height: 'H' };
 	const sortTitles = {
 		none: 'Sort images by file size (largest first)',
-		size: 'Sorted by file size — click to sort by width',
-		width: 'Sorted by width — click to sort by height',
-		height: 'Sorted by height — click to turn sorting off',
+		size: 'Sorted by file size, click to sort by width',
+		width: 'Sorted by width, click to sort by height',
+		height: 'Sorted by height, click to turn sorting off',
 	};
 	function cycleSort() {
 		sortMode.value = sortOrder[(sortOrder.indexOf(sortMode.value) + 1) % sortOrder.length];
