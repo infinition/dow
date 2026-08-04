@@ -102,6 +102,22 @@ npm test
 validates the manifest. CI additionally syntax-checks the extension scripts and verifies
 that every entry point the manifest references actually exists.
 
+### Builds and releases
+
+Every push produces a `dow-dev-<sha>` artifact, downloadable from the run page under the
+Actions tab. It is the current state of the branch, unversioned, kept 30 days. Use it to
+test a change without waiting for a release.
+
+Releases are cut from a tag and never rewritten. To publish a version, bump it in both
+`extension/manifest.json` and `package.json`, commit, then:
+
+```bash
+git tag v3.1.0 && git push origin v3.1.0
+```
+
+The release workflow refuses to run if the tag and the two version fields disagree, so a
+mismatched package can never reach the Releases page.
+
 ## License
 
 MIT. See the LICENSE file for details.

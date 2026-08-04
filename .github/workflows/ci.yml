@@ -46,3 +46,18 @@ jobs:
             }
             console.log('Entry points present: ' + refs.join(', '));
           "
+
+      # Unversioned development build, kept out of Releases on purpose: Releases are
+      # immutable and cut from a tag. Download this from the Actions run page to test
+      # the current state of the branch, then load it unpacked.
+      - name: Upload development build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dow-dev-${{ github.sha }}
+          path: |
+            extension
+            !extension/dow-chrome-theme
+            !extension/dow-chrome-theme.zip
+            !extension/bookmarklets/private
+          retention-days: 30
+          if-no-files-found: error
