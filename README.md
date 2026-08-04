@@ -13,7 +13,7 @@
   <a href="https://github.com/infinition/dow/releases/latest"><img src="https://img.shields.io/github/v/release/infinition/dow?color=f59e0b" alt="Latest release"></a>
   <a href="https://github.com/infinition/dow/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/infinition/dow/ci.yml?branch=main&label=build" alt="Build status"></a>
   <img src="https://img.shields.io/badge/manifest-v3-4285f4" alt="Manifest V3">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/infinition/dow?color=22c55e" alt="MIT license"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/infinition/dow?color=22c55e&cacheSeconds=3600" alt="MIT license"></a>
 </p>
 
 | Image Downloader | Bookmarklets |
