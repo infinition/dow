@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check tag matches manifest version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          MANIFEST=$(node -p "require('./extension/manifest.json').version")
+          PACKAGE=$(node -p "require('./package.json').version")
+          if [ "$TAG" != "$MANIFEST" ] || [ "$TAG" != "$PACKAGE" ]; then
+            echo "Tag $TAG, manifest $MANIFEST, package $PACKAGE: versions must match" >&2
+            exit 1
+          fi
+          echo "VERSION=$TAG" >> "$GITHUB_ENV"
+
+      - name: Verify no private material is bundled
+        run: |
+          if find extension -name '*.pem' -o -path 'extension/bookmarklets/private/*.js' | grep -q .; then
+            echo "Refusing to package: private key or private bookmarklet present" >&2
+            exit 1
+          fi
+
+      - name: Build store package
+        run: |
+          cd extension
+          zip -r "../dow-${VERSION}.zip" . \
+            -x 'dow-chrome-theme/*' -x 'dow-chrome-theme.zip' -x 'bookmarklets/private/*'
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "dow-${VERSION}.zip" \
+            --title "Dow ${GITHUB_REF_NAME}" \
+            --generate-notes

@@ -7,6 +7,12 @@ active page.
 It runs entirely in the browser. There is no backend, no build step, and no external
 dependency to install.
 
+## Screenshots
+
+| Image Downloader | Bookmarklets |
+|---|---|
+| <img src="docs/screenshots/image-downloader.jpg" alt="Image Downloader tab: filter bar with URL, width and height range sliders, and a grid of detected images with format, dimensions and file size" width="420"> | <img src="docs/screenshots/bookmarklets.jpg" alt="Bookmarklets tab: search field, category filters, and a list of bookmarklets each with a Run button" width="420"> |
+
 ## Features
 
 ### Image Downloader
@@ -39,6 +45,10 @@ dependency to install.
    - Enable **Developer mode** (top right).
    - Click **Load unpacked** and select the `extension` directory.
 
+Alternatively, download `dow-<version>.zip` from the
+[Releases](https://github.com/infinition/dow/releases) page, unzip it, and load that
+folder instead.
+
 The toolbar icon opens the popup; the icon next to the header toggles the same UI as a
 docked side panel.
 
@@ -70,6 +80,7 @@ dow/
 │   ├── src/                # Image Downloader app (Preact + signals, no bundler)
 │   ├── lib/                # Vendored Preact / htm / noUiSlider ES modules
 │   └── images/
+├── docs/screenshots/       # README illustrations, not shipped in the package
 ├── package.json
 └── LICENSE
 ```
