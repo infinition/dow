@@ -2,126 +2,71 @@
   <img src="dow.png" alt="DOW icon: a white download cloud on an orange to yellow gradient" width="120">
 </p>
 
-# DOW - Image Downloader & Bookmarklets Suite
+<h1 align="center">DOW</h1>
 
-DOW is a Chrome extension (Manifest V3) with two tools: a bulk image downloader with
-advanced filtering, and a bookmarklet launcher that runs utility scripts against the
-active page.
+<p align="center">
+  Bulk image downloader and bookmarklet launcher for Chrome.<br>
+  No backend, no build step, no tracking.
+</p>
 
-It runs entirely in the browser. There is no backend, no build step, and no external
-dependency to install.
-
-## Screenshots
+<p align="center">
+  <a href="https://github.com/infinition/dow/releases/latest"><img src="https://img.shields.io/github/v/release/infinition/dow?color=f59e0b" alt="Latest release"></a>
+  <a href="https://github.com/infinition/dow/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/infinition/dow/ci.yml?branch=main&label=build" alt="Build status"></a>
+  <img src="https://img.shields.io/badge/manifest-v3-4285f4" alt="Manifest V3">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/infinition/dow?color=22c55e" alt="MIT license"></a>
+</p>
 
 | Image Downloader | Bookmarklets |
 |---|---|
 | <img src="docs/screenshots/image-downloader.jpg" alt="Image Downloader tab: filter bar with URL, width and height range sliders, and a grid of detected images with format, dimensions and file size" width="420"> | <img src="docs/screenshots/bookmarklets.jpg" alt="Bookmarklets tab: search field, category filters, and a list of bookmarklets each with a Run button" width="420"> |
 
+## Install
+
+1. Download `dow-<version>.zip` from the
+   [latest release](https://github.com/infinition/dow/releases/latest) and unzip it.
+2. Open `chrome://extensions` and enable **Developer mode** (top right).
+3. Click **Load unpacked** and select the unzipped folder.
+
+The toolbar icon opens the popup. The icon next to the header docks the same interface as
+a side panel.
+
 ## Features
 
-### Image Downloader
+**Image Downloader**
 
-- Collects every image on the active page, including those inside iframes.
+- Collects every image on the page, including those inside iframes.
 - Filters by URL substring, by width and height ranges, and by file type.
 - Deduplicates variants of the same image before listing them.
 - Batch download with custom subfolder and filename rules.
-- Reconstructs a sane filename from the source URL and MIME type when a page serves
-  images without one, instead of letting Chrome save them as "unnamed".
+- Rebuilds a proper filename when a site serves images without one, instead of letting
+  Chrome save them all as "unnamed".
 
-### Bookmarklets
+**Bookmarklets**
 
-- Catalog of ready-made bookmarklets: reading focus, outline headings, show link URLs,
-  allow right-click and text selection, QR code generation, Wayback Machine lookup,
-  word frequency counter, picture-in-picture, and more.
+- Ready-made catalog: reading focus, outline headings, show link URLs, allow right-click
+  and text selection, QR codes, Wayback Machine lookup, picture-in-picture, and more.
 - Run any of them on the active tab in one click.
-- Add your own, with tags, stored in `chrome.storage.local`.
-- Import bookmarklets already saved in your Chrome bookmarks bar.
-
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/infinition/dow.git
-   ```
-
-2. Load the extension:
-   - Open `chrome://extensions`.
-   - Enable **Developer mode** (top right).
-   - Click **Load unpacked** and select the `extension` directory.
-
-Alternatively, download `dow-<version>.zip` from the
-[Releases](https://github.com/infinition/dow/releases) page, unzip it, and load that
-folder instead.
-
-The toolbar icon opens the popup; the icon next to the header toggles the same UI as a
-docked side panel.
+- Add your own, with tags. Import those already sitting in your bookmarks bar.
 
 ## Permissions
 
 | Permission | Why it is needed |
 |---|---|
-| `activeTab`, `scripting` | Scan the current page for images, and execute bookmarklets in it |
+| `activeTab`, `scripting` | Scan the current page for images, and run bookmarklets in it |
 | `downloads` | Save the selected images, and shape their filenames |
 | `storage` | Remember your filters, options, and custom bookmarklets |
-| `tabs` | Reload the image list when you switch or refresh a tab |
+| `tabs` | Refresh the image list when you switch or reload a tab |
 | `sidePanel` | Offer the docked side-panel view |
 | `<all_urls>` | Work on any site you explicitly open the extension on |
 
-The extension does **not** observe network traffic and registers no `webRequest`
-listeners. The service worker only wakes on a download event or a message from the popup,
-and content scripts are injected on demand rather than declared against every page.
+DOW never watches your browsing. It registers no `webRequest` listener, sends nothing to
+any server, and injects its content script only when you open it on a page.
 
-## Project Structure
+## Contributing
 
-```
-dow/
-├── extension/
-│   ├── manifest.json
-│   ├── popup.html          # Shell: tab navigation, mounts both tools
-│   ├── popup.js            # Tab routing + bookmarklet catalog engine
-│   ├── background.js       # Service worker: image download handling, side panel
-│   ├── bookmarklets/       # Bookmarklet catalog (one .js per bookmarklet)
-│   ├── src/                # Image Downloader app (Preact + signals, no bundler)
-│   ├── lib/                # Vendored Preact / htm / noUiSlider ES modules
-│   └── images/
-├── docs/screenshots/       # README illustrations, not shipped in the package
-├── package.json
-└── LICENSE
-```
-
-`extension/src/style.css` is a **frozen Tailwind build**: there is no Tailwind toolchain
-in the project, so new utility classes (and any `dark:` variant) will not resolve. Styling
-for the Image Downloader goes in `extension/src/image_downloader_dark.css` as plain CSS
-scoped under `#image-downloader-root`.
-
-## Development
-
-There is nothing to compile. Edit the files, then hit reload on the extension in
-`chrome://extensions`.
-
-```bash
-npm test
-```
-
-validates the manifest. CI additionally syntax-checks the extension scripts and verifies
-that every entry point the manifest references actually exists.
-
-### Builds and releases
-
-Every push produces a `dow-dev-<sha>` artifact, downloadable from the run page under the
-Actions tab. It is the current state of the branch, unversioned, kept 30 days. Use it to
-test a change without waiting for a release.
-
-Releases are cut from a tag and never rewritten. To publish a version, bump it in both
-`extension/manifest.json` and `package.json`, commit, then:
-
-```bash
-git tag v3.1.0 && git push origin v3.1.0
-```
-
-The release workflow refuses to run if the tag and the two version fields disagree, so a
-mismatched package can never reach the Releases page.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the project layout, the styling constraints,
+and how builds and releases work.
 
 ## License
 
-MIT. See the LICENSE file for details.
+MIT. See [LICENSE](LICENSE).
