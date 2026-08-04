@@ -1,21 +1,16 @@
 {
   "name": "dow-suite",
-  "version": "1.0.0",
-  "description": "Universal Web Stream & Media Downloader Suite (Chrome Extension + Local Node.js Backend)",
-  "main": "server.js",
+  "version": "3.0.0",
+  "description": "Dow - Chrome extension bundling a bulk image downloader and a bookmarklet launcher (no backend, no build step)",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
-    "test": "node -e \"console.log('Server syntax check OK'); process.exit(0);\""
+    "test": "node -e \"const m=require('./extension/manifest.json'); if(m.manifest_version!==3) throw new Error('Manifest must be v3'); console.log('Manifest V3 OK: '+m.name+' v'+m.version);\""
   },
   "keywords": [
-    "downloader",
-    "video-downloader",
     "chrome-extension",
-    "hls",
-    "yt-dlp",
-    "bunnystream",
-    "subtitles",
-    "lyrics"
+    "image-downloader",
+    "bookmarklets",
+    "manifest-v3"
   ],
   "author": "Infinition",
   "license": "MIT"

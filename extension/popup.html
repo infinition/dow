@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dow Companion & Image Downloader Suite</title>
+  <title>Dow - Image Downloader & Bookmarklets</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="src/style.css" type="text/css">
@@ -42,17 +42,6 @@
       align-items: center;
       gap: 8px;
     }
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
-    }
-    .logo-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .dow-download-icon {
       position: relative;
       isolation: isolate;
@@ -147,15 +136,6 @@
       transform: translateY(-1px);
     }
     .logo-text { font-weight: 800; font-size: 1.1rem; }
-    .badge {
-      background: rgba(249, 115, 22, 0.2);
-      color: #f97316;
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 10px;
-      border: 1px solid rgba(249, 115, 22, 0.4);
-    }
     /* Tab Navigation */
     .tab-nav {
       display: flex;
@@ -190,23 +170,6 @@
       background: #f97316;
       box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
     }
-    .download-title-row { display: flex; align-items: center; gap: 8px; }
-    .download-title-row .media-title-text { flex: 1; min-width: 0; }
-    .download-cancel-btn {
-      width: 26px;
-      height: 26px;
-      flex: 0 0 26px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(239, 68, 68, 0.5);
-      border-radius: 6px;
-      background: rgba(239, 68, 68, 0.12);
-      color: #fb7185;
-      cursor: pointer;
-    }
-    .download-cancel-btn:hover { background: rgba(239, 68, 68, 0.25); color: #fff; }
-    .download-cancel-btn:disabled { cursor: wait; opacity: 0.65; }
     .tab-content { display: none; }
     .tab-content.active { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
     #tab-images.active { display: flex; flex-direction: column; }
@@ -354,151 +317,6 @@
       transition: all 0.2s;
     }
     .icon-btn-sm:hover { background: rgba(255, 255, 255, 0.15); }
-    .icon-btn-sm.danger { color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
-    .icon-btn-sm.danger:hover { background: rgba(239, 68, 68, 0.15); }
-
-    /* Card Layout */
-    .media-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      margin-bottom: 0;
-      padding-right: 2px;
-    }
-    .media-card {
-      background: rgba(22, 27, 40, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .media-preview-group {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    .media-thumb {
-      width: 80px;
-      height: 48px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      flex-shrink: 0;
-      background: #000;
-    }
-    .media-info { flex: 1; overflow: hidden; }
-    .media-title-text {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #f8fafc;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 2px;
-    }
-    .media-type-tag {
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: #a3e635;
-      background: rgba(163, 230, 53, 0.15);
-      padding: 2px 6px;
-      border-radius: 4px;
-      display: inline-block;
-    }
-    /* Action Buttons Grid */
-    .action-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px;
-    }
-    .btn {
-      border: none;
-      padding: 6px;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      transition: all 0.2s;
-    }
-    .btn-mp4 { background: linear-gradient(135deg, #84cc16 0%, #bef264 100%); color: #111213; }
-    .btn-mp3 { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .btn-m4a { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .btn-queue { background: rgba(249, 115, 22, 0.2); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.4); }
-    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn.added { background: #10b981 !important; color: white !important; }
-    .format-picker { align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; color: #a3e635; display: flex; gap: 6px; padding: 5px 7px; }
-    .format-select { background: #1a1b1d; border: 1px solid rgba(163, 230, 53, 0.38); border-radius: 4px; color: #f8fafc; flex: 1; font: 700 0.68rem 'Outfit', sans-serif; min-width: 0; padding: 3px 5px; }
-    .format-select:disabled { color: #94a3b8; cursor: wait; }
-
-    /* Download Progress */
-    .progress-bar-wrapper {
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(135deg, #f97316 0%, #a3e635 100%);
-      width: 0%;
-      transition: width 0.2s;
-    }
-    .progress-text {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      color: #94a3b8;
-      font-family: monospace;
-    }
-    .empty-state {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      color: #64748b;
-      font-size: 0.85rem;
-    }
-    .empty-icon { font-size: 2rem; margin-bottom: 6px; color: #f97316; }
-
-    .folder-btn {
-      background: rgba(163, 230, 53, 0.2);
-      color: #a3e635;
-      border: 1px solid rgba(163, 230, 53, 0.4);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .folder-btn:hover { background: rgba(163, 230, 53, 0.35); }
-
-    .footer-btn {
-      width: 100%;
-      background: rgba(163, 230, 53, 0.15);
-      border: 1px solid rgba(163, 230, 53, 0.3);
-      color: #a3e635;
-      padding: 8px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .footer-btn:hover { background: rgba(163, 230, 53, 0.25); }
 
     .hidden { display: none !important; }
 
@@ -525,66 +343,25 @@
       <button id="sidepanel-toggle-btn" class="open-webapp-btn" title="Toggle Side Panel (Docked window on side)">
         <i class="fa-solid fa-columns"></i>
       </button>
-      <button id="open-app-btn" class="open-webapp-btn" title="Open the full Dow WebApp Suite">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-      </button>
     </div>
   </div>
 
   <!-- Tab Navigation -->
   <div class="tab-nav">
-    <button class="tab-btn active" data-tab="streams">
-      <i class="fa-solid fa-photo-film"></i> Medias (<span id="stream-count">0</span>)
-    </button>
-    <button class="tab-btn" data-tab="images">
+    <button class="tab-btn active" data-tab="images">
       <i class="fa-solid fa-image"></i> Image Downloader
-    </button>
-    <button class="tab-btn" data-tab="downloads">
-      <i class="fa-solid fa-circle-down"></i> Downloads (<span id="dl-count">0</span>)
     </button>
     <button class="tab-btn" data-tab="bookmarklets">
       <i class="fa-solid fa-wand-magic-sparkles"></i> Bookmarklets
     </button>
   </div>
 
-  <!-- TAB 1: DETECTED MEDIA STREAMS -->
-  <div id="tab-streams" class="tab-content active">
-    <div class="control-bar">
-      <span id="page-title" class="page-title"><i class="fa-solid fa-globe"></i> Scanning page...</span>
-      <button id="refresh-streams-btn" class="icon-btn-sm" title="Re-scan streams on this page">
-        <i class="fa-solid fa-arrows-rotate"></i> Refresh
-      </button>
-    </div>
-    <div id="media-list" class="media-list">
-      <div class="empty-state">
-        <i class="fa-solid fa-spinner fa-spin empty-icon"></i>
-        <p>Detecting media streams on page...</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB 2: IMAGE DOWNLOADER (EXHAUSTIVE INTEGRATION & DARK GLASSMORPHISM STYLING) -->
-  <div id="tab-images" class="tab-content">
+  <!-- TAB 1: IMAGE DOWNLOADER (EXHAUSTIVE INTEGRATION & DARK GLASSMORPHISM STYLING) -->
+  <div id="tab-images" class="tab-content active">
     <main id="image-downloader-root" class="flex min-h-110 flex-col bg-slate-900 text-slate-100 p-2"></main>
   </div>
 
-  <!-- TAB 3: ACTIVE SERVER DOWNLOADS -->
-  <div id="tab-downloads" class="tab-content">
-    <div class="control-bar">
-      <span class="page-title"><i class="fa-solid fa-download"></i> Active & Completed Downloads</span>
-      <button id="clear-completed-btn" class="icon-btn-sm danger" title="Clear Completed Downloads">
-        <i class="fa-solid fa-broom"></i> Clear Finished
-      </button>
-    </div>
-    <div id="downloads-list" class="media-list">
-      <div class="empty-state">
-        <i class="fa-solid fa-inbox empty-icon"></i>
-        <p>No active downloads in queue.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB 4: BOOKMARKLETS -->
+  <!-- TAB 2: BOOKMARKLETS -->
   <div id="tab-bookmarklets" class="tab-content">
     <div class="control-bar">
       <span class="page-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Run on active page</span>

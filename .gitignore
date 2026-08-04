@@ -14,16 +14,11 @@ package-lock.json
 *.crx
 *.pem
 
-# Downloaded Media & Temporary Files
-downloads/
-*.mp4
-*.mp3
-*.m4a
-*.webm
-*.mkv
-*.srt
-*.lrc
-*.txt
+# Build archives (distributed as GitHub Releases, not committed)
+*.zip
+!extension/dow-chrome-theme.zip
+
+# Temporary Files
 scratch/
 
 # Logs & System Files

@@ -19,8 +19,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Verify Node.js Server Syntax
-        run: node -c server.js
+      - name: Verify Extension Script Syntax
+        run: |
+          node --check extension/background.js
+          node --check extension/popup.js
 
       - name: Validate Chrome Extension Manifest V3
         run: |
@@ -29,4 +31,18 @@ jobs:
             const manifest = JSON.parse(fs.readFileSync('extension/manifest.json', 'utf8'));
             if (manifest.manifest_version !== 3) throw new Error('Manifest version must be 3');
             console.log('Manifest V3 Validated: ' + manifest.name + ' v' + manifest.version);
+          "
+
+      - name: Check Every Manifest Entry Point Exists
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const manifest = JSON.parse(fs.readFileSync('extension/manifest.json', 'utf8'));
+            const refs = [manifest.background?.service_worker, manifest.action?.default_popup, manifest.side_panel?.default_path].filter(Boolean);
+            for (const ref of refs) {
+              const p = path.join('extension', ref);
+              if (!fs.existsSync(p)) throw new Error('Manifest references a missing file: ' + ref);
+            }
+            console.log('Entry points present: ' + refs.join(', '));
           "
