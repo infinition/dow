@@ -3,12 +3,16 @@ name: Release
 on:
   push:
     tags: [ 'v*' ]
+  # Lets the macOS app be rebuilt for a tag that already has a release, without
+  # cutting a version. Pick the tag as the ref when starting the run.
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   release:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
@@ -54,6 +58,7 @@ jobs:
   # is ad hoc, so the app is not notarised: see the install notes in the README.
   safari:
     needs: release
+    if: ${{ always() && needs.release.result != 'failure' && needs.release.result != 'cancelled' }}
     runs-on: macos-latest
 
     steps:
@@ -66,7 +71,12 @@ jobs:
           node-version: '20'
 
       - name: Read the version from the tag
-        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+        run: |
+          if [ "$GITHUB_REF_TYPE" != "tag" ]; then
+            echo "This job uploads to a release, so it has to run on a tag, not on $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+          echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
 
       - name: Build the Safari flavour
         run: node scripts/build-safari.mjs
@@ -74,17 +84,39 @@ jobs:
       - name: Verify the compatibility shim
         run: node scripts/test-safari-shim.mjs
 
+      # The identifier has to be cased exactly like the app name. The converter
+      # writes it verbatim on the extension target while the app target derives
+      # its own from $(PRODUCT_NAME:rfc1034identifier), and Xcode rejects the
+      # build if the extension identifier is not prefixed by the app one.
       - name: Convert to a Safari web extension project
         run: |
           xcrun safari-web-extension-converter dist/safari \
             --project-location build \
             --app-name Dow \
-            --bundle-identifier com.infinition.dow \
+            --bundle-identifier com.infinition.Dow \
             --macos-only \
             --copy-resources \
             --no-open \
             --no-prompt \
             --force
+
+      - name: Check the bundle identifiers agree
+        run: |
+          PROJECT=$(ls -d build/*/*.xcodeproj | head -1)
+          IDS=$(grep -o 'PRODUCT_BUNDLE_IDENTIFIER = [^;]*;' "$PROJECT/project.pbxproj" \
+            | sed 's/PRODUCT_BUNDLE_IDENTIFIER = //; s/;$//' \
+            | sed 's/$(PRODUCT_NAME:rfc1034identifier)/Dow/g' \
+            | sort -u)
+          echo "$IDS"
+          APP=$(echo "$IDS" | grep -v '\.Extension$' | head -1)
+          EXTENSION=$(echo "$IDS" | grep '\.Extension$' | head -1)
+          case "$EXTENSION" in
+            "$APP".*) echo "Prefix rule satisfied: $EXTENSION under $APP" ;;
+            *)
+              echo "The extension identifier ($EXTENSION) must be prefixed with the app identifier ($APP)" >&2
+              exit 1
+              ;;
+          esac
 
       - name: Build the app
         run: |
