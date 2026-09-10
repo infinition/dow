@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dow - Image Downloader & Bookmarklets Suite",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Bulk image downloader with advanced filters, plus a bookmarklet launcher that runs utility scripts on the active page.",
   "permissions": [
     "activeTab",
