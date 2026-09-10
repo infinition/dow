@@ -47,6 +47,15 @@ jobs:
             console.log('Entry points present: ' + refs.join(', '));
           "
 
+      # The Safari flavour is generated, so it can silently drift from the Chrome
+      # source. Building it and running the shim scenarios on every push keeps
+      # that from being discovered at tag time.
+      - name: Verify the Safari build
+        run: |
+          node --check extension/compat/browser-compat.js
+          node scripts/build-safari.mjs
+          node scripts/test-safari-shim.mjs
+
       # Unversioned development build, kept out of Releases on purpose: Releases are
       # immutable and cut from a tag. Download this from the Actions run page to test
       # the current state of the branch, then load it unpacked.

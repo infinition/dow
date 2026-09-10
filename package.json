@@ -1,13 +1,16 @@
 {
   "name": "dow-suite",
   "version": "3.0.0",
-  "description": "Dow - Chrome extension bundling a bulk image downloader and a bookmarklet launcher (no backend, no build step)",
+  "description": "Dow - Chrome and Safari extension bundling a bulk image downloader and a bookmarklet launcher (no backend, no build step)",
   "private": true,
   "scripts": {
-    "test": "node -e \"const m=require('./extension/manifest.json'); if(m.manifest_version!==3) throw new Error('Manifest must be v3'); console.log('Manifest V3 OK: '+m.name+' v'+m.version);\""
+    "test": "node -e \"const m=require('./extension/manifest.json'); if(m.manifest_version!==3) throw new Error('Manifest must be v3'); console.log('Manifest V3 OK: '+m.name+' v'+m.version);\"",
+    "build:safari": "node scripts/build-safari.mjs",
+    "test:safari": "node scripts/build-safari.mjs && node scripts/test-safari-shim.mjs"
   },
   "keywords": [
     "chrome-extension",
+    "safari-web-extension",
     "image-downloader",
     "bookmarklets",
     "manifest-v3"

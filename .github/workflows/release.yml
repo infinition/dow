@@ -47,3 +47,75 @@ jobs:
             "dow-${VERSION}.zip" \
             --title "Dow ${GITHUB_REF_NAME}" \
             --generate-notes
+
+  # Safari cannot load a raw extension folder: it needs the extension wrapped in
+  # a signed macOS app, and only Xcode can do that. This job builds that app on a
+  # macOS runner and adds it to the release the job above created. The signature
+  # is ad hoc, so the app is not notarised: see the install notes in the README.
+  safari:
+    needs: release
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Read the version from the tag
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+
+      - name: Build the Safari flavour
+        run: node scripts/build-safari.mjs
+
+      - name: Verify the compatibility shim
+        run: node scripts/test-safari-shim.mjs
+
+      - name: Convert to a Safari web extension project
+        run: |
+          xcrun safari-web-extension-converter dist/safari \
+            --project-location build \
+            --app-name Dow \
+            --bundle-identifier com.infinition.dow \
+            --macos-only \
+            --copy-resources \
+            --no-open \
+            --no-prompt \
+            --force
+
+      - name: Build the app
+        run: |
+          PROJECT=$(ls -d build/*/*.xcodeproj | head -1)
+          SCHEME=$(xcodebuild -list -project "$PROJECT" -json \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin)["project"]["schemes"][0])')
+          echo "Building $SCHEME from $PROJECT"
+          xcodebuild -project "$PROJECT" -scheme "$SCHEME" \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            DEVELOPMENT_TEAM="" \
+            PROVISIONING_PROFILE_SPECIFIER="" \
+            CONFIGURATION_BUILD_DIR="$PWD/out" \
+            build
+
+      - name: Package the app
+        run: |
+          APP=$(ls -d out/*.app | head -1)
+          if [ -z "$APP" ]; then
+            echo "No app was produced" >&2
+            exit 1
+          fi
+          codesign --verify --deep --strict "$APP"
+          ditto -c -k --keepParent "$APP" "dow-${VERSION}-safari-macos.zip"
+
+      - name: Add the app to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "$GITHUB_REF_NAME" \
+            "dow-${VERSION}-safari-macos.zip" --clobber

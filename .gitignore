@@ -18,6 +18,11 @@ package-lock.json
 *.zip
 !extension/dow-chrome-theme.zip
 
+# Generated builds: scripts/build-safari.mjs and the Xcode project it feeds
+dist/
+build/
+out/
+
 # Temporary Files
 scratch/
 

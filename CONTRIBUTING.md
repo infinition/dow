@@ -28,7 +28,9 @@ dow/
 │   ├── bookmarklets/       # Bookmarklet catalog (one .js per bookmarklet)
 │   ├── src/                # Image Downloader app (Preact + signals, no bundler)
 │   ├── lib/                # Vendored Preact / htm / noUiSlider ES modules
+│   ├── compat/             # Feature-detected shim for the APIs Safari lacks
 │   └── images/
+├── scripts/                # Safari build and its test harness
 ├── docs/screenshots/       # README illustrations, not shipped in the package
 ├── package.json
 └── LICENSE
@@ -56,6 +58,44 @@ git tag v3.1.0 && git push origin v3.1.0
 
 The release workflow refuses to run if the tag and the two version fields disagree, so a
 mismatched package can never reach the Releases page.
+
+## The Safari flavour
+
+Nothing under `extension/` is Safari specific, and nothing there is generated. One command
+produces the Safari build:
+
+```bash
+npm run build:safari
+```
+
+It copies `extension/` into `dist/safari/`, drops the manifest entries Safari does not
+implement (`downloads`, `sidePanel`, `side_panel`), and wires
+`extension/compat/browser-compat.js` into the service worker and into every page.
+
+That shim is feature detected, so it defines only what the host browser is missing and
+stays inert on Chromium. It fills in two things:
+
+- `chrome.downloads`. Safari has no API at all, so the batch save is answered in the page,
+  which is the only context that can hand a blob to the browser. Images are fetched with
+  the manifest host permissions, renamed with the same rules `background.js` applies, then
+  emitted as one stored ZIP. The service worker keeps an inert stub so its listener
+  registrations do not throw at load.
+- `chrome.sidePanel`. Reopens the panel document as a standalone window.
+
+```bash
+npm run test:safari
+```
+
+builds the flavour and runs `scripts/test-safari-shim.mjs`, which drives the shim against a
+Safari shaped host: batch save, single file, sequential rename, side panel fallback, and a
+service worker load with no downloads API. The archive it produces is read back with an
+independent ZIP reader when `python3` is on the machine, so a bad CRC or offset fails the
+run. CI runs both on every push.
+
+The `.app` itself is only built on the macOS runner, by the `safari` job in
+`.github/workflows/release.yml`, and uploaded to the release the Chrome job created. It is
+signed ad hoc, not notarised. To notarise, add a Developer ID certificate to the repository
+secrets and replace the `CODE_SIGN_IDENTITY="-"` line in that job.
 
 ## Adding a bookmarklet
 
